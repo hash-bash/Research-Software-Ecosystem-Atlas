@@ -5,80 +5,89 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the repository
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    # Set up Python environment
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.12'
 
-    # Set up Node.js environment
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
 
-    # Cache Node.js dependencies
     - name: Cache Node.js modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
-        path: StaticSiteGeneration/node_modules
-        key: node-modules-${{ hashFiles('StaticSiteGeneration/package-lock.json') }}
+        path: frontend/node_modules
+        key: node-modules-${{ hashFiles('frontend/package-lock.json') }}
         restore-keys: |
           node-modules-
 
-    # Cache Python dependencies
     - name: Cache Python dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
-        key: pip-cache-${{ hashFiles('MergeDataFiles/requirements.txt') }}
+        key: pip-cache-${{ hashFiles('backend/requirements.txt') }}
         restore-keys: |
           pip-cache-
 
-    # Cache the content directory and metadata
-    - name: Cache RSE content directory and metadata
-      uses: actions/cache@v3
+    - name: Get latest commit hash of content repo
+      id: content-hash
+      run: |
+        HASH=$(curl -s https://api.github.com/repos/research-software-ecosystem/content/commits/master | jq -r .sha)
+        echo "hash=$HASH" >> $GITHUB_OUTPUT
+
+    - name: Restore content from cache
+      id: cache-content
+      uses: actions/cache@v4
       with:
         path: |
-          MergeDataFiles/content
-          MergeDataFiles/combined_metadata.json
-        key: content-${{ hashFiles('MergeDataFiles/content/.git/HEAD', 'MergeDataFiles/content/.git/refs/remotes/origin/master', 'MergeDataFiles/combined_metadata.json', 'MergeDataFiles/requirements.txt') }}
-        restore-keys: |
-          content-
+          backend/content
+        key: content-${{ steps.content-hash.outputs.hash }}
 
-    # Run Makefile rule: install-all (install Python, Node.js dependencies)
-    - name: Install all dependencies (Python and Node.js)
-      run: |
-        make install-all
-
-    # Run Makefile rule: refresh-metadata (handle cloning or updating of the repository and generating combined metadata JSON file)
-    - name: Clone or update RSE content repository
-      run: |
-        make refresh-metadata
-
-    # Run Makefile rule: copy-metadata (copy metadata to public directory)
-    - name: Copy metadata to public directory
-      run: |
-        make copy-metadata
-
-    # Run Makefile rule: generate-site (generate static site)
-    - name: Generate static site
-      run: |
-        make generate-site
-
-    # Deploy to GitHub Pages
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Checkout content repository
+      if: steps.cache-content.outputs.cache-hit != 'true'
+      uses: actions/checkout@v4
       with:
-        publish_dir: StaticSiteGeneration/.output/public
+        repository: research-software-ecosystem/content
+        path: backend/content
+
+    - name: Install Python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r backend/requirements.txt
+
+    - name: Install Node.js dependencies
+      working-directory: frontend
+      run: npm install
+      env:
+        NUXT_TELEMETRY_DISABLED: 1
+
+    - name: Generate combined metadata JSON file
+      run: |
+        python backend/merge_data_files.py
+
+    - name: Generate static site
+      working-directory: frontend
+      run: npm run generate
+      env:
+        NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: frontend/.output/public
+        force_orphan: true
+        keep_files: false
