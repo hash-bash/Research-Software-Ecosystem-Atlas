@@ -28,7 +28,7 @@ const isDark = computed({
               src="/img/logo-rsec.svg"
             />
 
-            <span>RSEc Atlas</span>
+            <span>Research Software Ecosystem Atlas</span>
           </NuxtLink>
 
           <div class="flex items-center justify-end gap-1">
@@ -48,7 +48,7 @@ const isDark = computed({
             <UButton
               target="_blank"
               icon="i-lucide-github"
-              to="https://github.com/research-software-ecosystem/content"
+              to="https://github.com/hash-bash/Research-Software-Ecosystem-Atlas"
               color="neutral"
               variant="subtle"
               class="cursor-pointer"
@@ -77,7 +77,7 @@ const isDark = computed({
           <NuxtLink
             target="_blank"
             class="font-bold transition-all hover:text-gray-700 dark:hover:text-gray-300"
-            to="https://github.com/research-software-ecosystem/research-software-ecosystem.github.io?tab=readme-ov-file"
+            to="https://github.com/hash-bash/Research-Software-Ecosystem-Atlas"
           >
             Research Software Ecosystem
           </NuxtLink>

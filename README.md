@@ -1,6 +1,6 @@
-# 🧬 Research Software Ecosystem Atlas
+# Research Software Ecosystem Atlas
 
-[![Website](https://img.shields.io/badge/Website-RSEc--Atlas-blueviolet?style=for-the-badge&logo=githubpages)](https://research-software-ecosystem.github.io/RSEc-Atlas)
+[![Website](https://img.shields.io/badge/Website-Research--Software--Ecosystem--Atlas-blueviolet?style=for-the-badge&logo=githubpages)](https://hash-bash.github.io/Research-Software-Ecosystem-Atlas/)
 
 ![RSEc Atlas Screenshot](main-screenshot.png)
 <sub>Example screenshot of the RSEc Atlas main page. The homepage allows users to search, filter, and browse through a large collection of bioinformatics tools and containers. Each tool card displays key metadata, badges, and a quick link to view detailed information. Pagination and advanced search options are available for efficient navigation.</sub>
@@ -98,12 +98,12 @@ Users can mark bio tools and containers as favorites for quick access in the fut
 
 ### 🔗 URLs Sharing
 If users want to share the URL with a search query, it can be done by sharing the URL and appending `/?search=SEARCH QUERY`, which will be automatically converted to `/?search=SEARCH+QUERY`. Following are some of the examples of the URLs with the search query:
-   - https://research-software-ecosystem.github.io/RSEc-Atlas/?search=1000Genomes+ID+history+converter `(Gives the tools with search string as 1000Genomes ID history converter)`
-   - https://research-software-ecosystem.github.io/RSEc-Atlas/?search=tag:'de.NBI'+tag:'RNA-Seq' `(Gives the tools with result consisting Tag de.NBI collection and tag RNA-Seq)`
+   - https://hash-bash.github.io/Research-Software-Ecosystem-Atlas/?search=1000Genomes+ID+history+converter `(Gives the tools with search string as 1000Genomes ID history converter)`
+   - https://hash-bash.github.io/Research-Software-Ecosystem-Atlas/?search=tag:'de.NBI'+tag:'RNA-Seq' `(Gives the tools with result consisting Tag de.NBI collection and tag RNA-Seq)`
 
 If users want to share a link to a tool, they can directly share the URL available on the tool's details page. The following are some of the examples:
-   - https://research-software-ecosystem.github.io/RSEc-Atlas/tool/1000genomes_id_history_converter
-   - https://research-software-ecosystem.github.io/RSEc-Atlas/tool/fargene
+   - https://hash-bash.github.io/Research-Software-Ecosystem-Atlas/tool/1000genomes_id_history_converter
+   - https://hash-bash.github.io/Research-Software-Ecosystem-Atlas/tool/fargene
 
 
 ## 🛠️ Setup and Installation
@@ -120,8 +120,8 @@ Before setting up the project, ensure you have the following installed on your l
 To get started, clone the repository to your local machine.
 
 ```bash
-git clone https://github.com/research-software-ecosystem/RSEc-Atlas.git
-cd RSEc-Atlas
+git clone https://github.com/hash-bash/Research-Software-Ecosystem-Atlas.git
+cd Research-Software-Ecosystem-Atlas
 ```
 
 #### 3. 🐍 Install Python Dependencies
