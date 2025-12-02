@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     head: {
       titleTemplate: `%siteName %separator %s`,
       templateParams: {
-        siteName: process.env.APP_TITLE || "RSEc Atlas",
+        siteName: process.env.APP_TITLE || "Research Software Ecosystem Atlas",
         separator: "|",
       },
       meta: [
